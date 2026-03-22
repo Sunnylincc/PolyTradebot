@@ -1,0 +1,24 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+
+# cloudflare/opennext
+.open-next/
+.wrangler/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# env
+.env*
+!.env.example
+!.dev.vars.example
+
+# misc
+.DS_Store

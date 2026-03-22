@@ -37,6 +37,57 @@ npm run dev
 
 Open: `http://localhost:3000`
 
+
+## Deploy to Cloudflare Workers
+
+This repo is now configured for **direct deployment to Cloudflare Workers** using OpenNext.
+
+### 1) Install dependencies
+
+```bash
+npm install
+```
+
+### 2) Build for Cloudflare
+
+```bash
+npm run cf:build
+```
+
+This generates the Worker bundle in `.open-next/`.
+
+### 3) Preview locally with Cloudflare runtime
+
+```bash
+npm run cf:preview
+```
+
+### 4) Deploy
+
+1. Authenticate once:
+   ```bash
+   npx wrangler login
+   ```
+2. Deploy:
+   ```bash
+   npm run cf:deploy
+   ```
+
+For Cloudflare Dashboard builds, set **Build command** to `npm run cf:build` and leave output directory empty (Worker deployment).
+
+### Cloudflare config notes
+
+- `wrangler.jsonc` is preconfigured to use `.open-next/worker.js` as entrypoint.
+- `open-next.config.ts` is included to avoid interactive prompts during CI builds.
+- Static assets are served from `.open-next/assets` via the `ASSETS` binding.
+- `nodejs_compat` is enabled for Node compatibility in Worker runtime.
+- Update `name` in `wrangler.jsonc` before production deploy.
+
+### Environment variables
+
+For local preview, copy `.dev.vars.example` to `.dev.vars` and set required values.
+For production, set variables via Cloudflare dashboard or `wrangler secret put`.
+
 ## Dry Mode vs Real Mode
 
 - **Dry mode** is default.
