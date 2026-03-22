@@ -1,2 +1,4 @@
 # Local Cloudflare preview vars (copy to .dev.vars)
 # NEXT_PUBLIC_APP_NAME=Polysage
+# CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
+# CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id

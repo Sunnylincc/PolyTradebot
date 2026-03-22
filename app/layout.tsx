@@ -1,6 +1,6 @@
 import "./globals.css";
 import Link from "next/link";
-import { Activity, Bot, Brain, Gauge, Home, LineChart, Settings2, TestTube2 } from "lucide-react";
+import { Activity, Bot, Brain, Home, LineChart, Settings2, TestTube2 } from "lucide-react";
 import type { ReactNode } from "react";
 
 const nav = [

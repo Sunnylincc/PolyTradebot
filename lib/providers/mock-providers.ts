@@ -1,16 +1,41 @@
 import { ExecutionProvider, MarketDataProvider, MemoryStore, ModelProvider } from "@/lib/providers/interfaces";
 import { state, uid } from "@/lib/store/state";
 
-const normalizeGamma = (raw: any) => ({
-  id: String(raw.id),
+type GammaMarketRaw = Record<string, unknown> & {
+  id?: string | number;
+  question?: string;
+  slug?: string;
+  category?: string;
+  outcomePrices?: unknown;
+  lastTradePrice?: number | string;
+  volume?: number | string;
+  liquidity?: number | string;
+  endDate?: string;
+  active?: boolean;
+};
+
+const getFirstOutcomePrice = (outcomePrices: unknown): number | undefined => {
+  if (!Array.isArray(outcomePrices) || outcomePrices.length === 0) return undefined;
+  const first = outcomePrices[0];
+  const parsed = Number(first);
+  return Number.isFinite(parsed) ? parsed : undefined;
+};
+
+const toNumber = (value: unknown, fallback: number): number => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+};
+
+const normalizeGamma = (raw: GammaMarketRaw) => ({
+  id: String(raw.id ?? ""),
   source: "polymarket" as const,
-  question: raw.question,
-  slug: raw.slug,
-  category: raw.category || "uncategorized",
-  yesPrice: Number(raw.outcomePrices?.[0] ?? raw.lastTradePrice ?? 0.5),
-  noPrice: 1 - Number(raw.outcomePrices?.[0] ?? raw.lastTradePrice ?? 0.5),
-  volume: Number(raw.volume ?? 0),
-  liquidity: Number(raw.liquidity ?? 0),
+  question: String(raw.question ?? "Untitled market"),
+  slug: String(raw.slug ?? ""),
+  category: String(raw.category ?? "uncategorized"),
+  yesPrice: toNumber(getFirstOutcomePrice(raw.outcomePrices) ?? raw.lastTradePrice, 0.5),
+  noPrice: 1 - toNumber(getFirstOutcomePrice(raw.outcomePrices) ?? raw.lastTradePrice, 0.5),
+  volume: toNumber(raw.volume, 0),
+  liquidity: toNumber(raw.liquidity, 0),
   endDate: raw.endDate ?? new Date().toISOString(),
   active: Boolean(raw.active),
   timestamp: new Date().toISOString(),
@@ -21,7 +46,7 @@ export const polymarketDataProvider: MarketDataProvider = {
     try {
       const res = await fetch("https://gamma-api.polymarket.com/markets?active=true&closed=false&limit=50", { cache: "no-store" });
       if (!res.ok) throw new Error(`Gamma API ${res.status}`);
-      const payload = (await res.json()) as any[];
+      const payload = (await res.json()) as GammaMarketRaw[];
       const normalized = payload.slice(0, 25).map(normalizeGamma);
       if (normalized.length) {
         state.markets = normalized;
