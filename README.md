@@ -88,6 +88,11 @@ For Cloudflare Dashboard builds, set **Build command** to `npm run cf:build` and
 For local preview, copy `.dev.vars.example` to `.dev.vars` and set required values.
 For production, set variables via Cloudflare dashboard or `wrangler secret put`.
 
+Required for CI/deployment platform:
+
+- `CLOUDFLARE_API_TOKEN` (Cloudflare API Token with **Workers Scripts:Edit** permission)
+- `CLOUDFLARE_ACCOUNT_ID` (Cloudflare account ID)
+
 ## Dry Mode vs Real Mode
 
 - **Dry mode** is default.
