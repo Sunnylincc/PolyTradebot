@@ -74,6 +74,7 @@ npm run cf:preview
    ```
 
 For Cloudflare Dashboard builds, set **Build command** to `npm run cf:build` and leave output directory empty (Worker deployment).
+Do **not** use the default `bun run build` for Worker deployment, because OpenNext's Cloudflare build should be triggered via `cf:build`.
 
 ### Cloudflare config notes
 
