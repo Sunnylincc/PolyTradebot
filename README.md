@@ -51,8 +51,10 @@ npm install
 ### 2) Build for Cloudflare
 
 ```bash
-npm run cf:build
+npm run build
 ```
+
+(`npm run build` is mapped to OpenNext for Cloudflare compatibility.)
 
 This generates the Worker bundle in `.open-next/`.
 
@@ -72,6 +74,8 @@ npm run cf:preview
    ```bash
    npm run cf:deploy
    ```
+
+For Cloudflare Dashboard builds, set **Build command** to `npm run build` and leave output directory empty (Worker deployment).
 
 ### Cloudflare config notes
 
