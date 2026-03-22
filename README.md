@@ -80,6 +80,7 @@ For Cloudflare Dashboard builds, set **Build command** to `npm run build` and le
 ### Cloudflare config notes
 
 - `wrangler.jsonc` is preconfigured to use `.open-next/worker.js` as entrypoint.
+- `open-next.config.ts` is included to avoid interactive prompts during CI builds.
 - Static assets are served from `.open-next/assets` via the `ASSETS` binding.
 - `nodejs_compat` is enabled for Node compatibility in Worker runtime.
 - Update `name` in `wrangler.jsonc` before production deploy.
